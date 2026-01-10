@@ -1,6 +1,7 @@
 import userModel from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../utils/generateTokenAndSetCookie.js";
+import sendEmail from "../config/nodemailer.js";
 
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -32,6 +33,12 @@ export const signup = async (req, res) => {
 
     await user.save();
     generateTokenAndSetCookie(res, user._id);
+
+    // Send welcome email
+    const subject = "Welcome to Biblious ✨";
+    const message = `✨ Welcome to Biblious Website. Your account has been created with id: ${email}`;
+
+    sendEmail(email, subject, message);
 
     return res.status(200).json({
       success: true,
