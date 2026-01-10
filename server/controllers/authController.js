@@ -34,7 +34,50 @@ export const signup = async (req, res) => {
     generateTokenAndSetCookie(res, user._id);
 
     return res.status(200).json({
+      success: true,
+      user: { user },
+    });
+  } catch (error) {
+    return res.status(500).json({
       success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.json({
+      success: false,
+      message: "email and password required.",
+    });
+  }
+
+  try {
+    const user = await userModel.findOne({ email: email });
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found!",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.json({
+        success: false,
+        message: "Invalid Password.",
+      });
+    }
+
+    generateTokenAndSetCookie(res, user._id);
+
+    return res.json({
+      success: true,
       user: { user },
     });
   } catch (error) {
