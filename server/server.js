@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import authRouter from "./routes/authRouter.js";
+import userRouter from "./routes/userRouter.js";
 
 const app = express();
 connectDB();
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 
 // root API Endpoints
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/user", userRouter);
 
 // Start server from here
 app.listen(PORT, () =>
