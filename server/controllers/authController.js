@@ -278,3 +278,34 @@ export const resetPassword = async (req, res) => {
     });
   }
 };
+
+export const isAuthenticated = async (req, res) => {
+  try {
+    return res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({
+      success: true,
+      message: error.message,
+    });
+  }
+};
+
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production" ? true : false,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Logged Out.",
+    });
+  } catch (error) {
+    return req.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
