@@ -3,6 +3,7 @@ import {
   addBook,
   getBook,
   getBooks,
+  getRelatedBooks,
   softDelete,
   updateBook,
 } from "../controllers/bookController.js";
@@ -15,5 +16,6 @@ bookRouter.route("/:slug").get(getBook);
 bookRouter.route("/add").post(userAuth, addBook);
 bookRouter.route("/update/:id").patch(userAuth, updateBook);
 bookRouter.route("/soft-delete/:id").delete(userAuth, softDelete);
+bookRouter.route("/:slug/related").get(getRelatedBooks);
 
 export default bookRouter;

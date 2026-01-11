@@ -321,3 +321,42 @@ export const softDelete = async (req, res) => {
     });
   }
 };
+
+export const getRelatedBooks = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const limit = Number(req.query.limit) || 4;
+
+    const currentBook = await bookModel.findOne({
+      slug,
+      isActive: true,
+    });
+
+    if (!currentBook) {
+      return res.status(404).json({
+        success: false,
+        message: "Book not found",
+      });
+    }
+
+    const relatedBooks = await bookModel
+      .find({
+        _id: { $ne: currentBook._id },
+        categories: { $ne: currentBook.categories },
+        isActive: true,
+      })
+      .limit(limit)
+      .sort({ "ratings.average": -1 });
+
+    return res.status(200).json({
+      success: true,
+      count: relatedBooks.length,
+      data: relatedBooks,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch related books",
+    });
+  }
+};
