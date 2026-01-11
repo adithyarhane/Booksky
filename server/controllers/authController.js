@@ -36,8 +36,8 @@ export const signup = async (req, res) => {
     generateTokenAndSetCookie(res, user._id);
 
     // Send welcome email
-    const subject = "Welcome to Biblious ✨";
-    const message = `✨ Welcome to Biblious Website. Your account has been created with id: ${email}`;
+    const subject = "Welcome to Booksky ✨";
+    const message = `✨ Welcome to Booksky Website. Your account has been created with id: ${email}`;
 
     sendEmail(email, subject, message);
 
