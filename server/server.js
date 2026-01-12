@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/userRouter.js";
 import bookRouter from "./routes/bookRouter.js";
+import wishlistRouter from "./routes/wishlistRouter.js";
 
 const app = express();
 connectDB();
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/book", bookRouter);
+app.use("/api/v1/wishlist", wishlistRouter);
 
 // Start server from here
 app.listen(PORT, () =>
