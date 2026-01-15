@@ -149,7 +149,6 @@ export const getWishlistData = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      checkError: error.message,
       message: "Failed to fetch wishlist",
     });
   }

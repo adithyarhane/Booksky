@@ -7,6 +7,7 @@ import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/userRouter.js";
 import bookRouter from "./routes/bookRouter.js";
 import wishlistRouter from "./routes/wishlistRouter.js";
+import cartRouter from "./routes/cartRouter.js";
 
 const app = express();
 connectDB();
@@ -30,6 +31,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/book", bookRouter);
 app.use("/api/v1/wishlist", wishlistRouter);
+app.use("/api/v1/cart", cartRouter);
 
 // Start server from here
 app.listen(PORT, () =>
