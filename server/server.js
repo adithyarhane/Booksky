@@ -9,6 +9,7 @@ import bookRouter from "./routes/bookRouter.js";
 import wishlistRouter from "./routes/wishlistRouter.js";
 import cartRouter from "./routes/cartRouter.js";
 import orderRouter from "./routes/orderRouter.js";
+import reviewRouter from "./routes/reviewRouter.js";
 
 const app = express();
 connectDB();
@@ -34,6 +35,7 @@ app.use("/api/v1/book", bookRouter);
 app.use("/api/v1/wishlist", wishlistRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/review", reviewRouter);
 
 // Start server from here
 app.listen(PORT, () =>
