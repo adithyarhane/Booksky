@@ -205,7 +205,7 @@ export const sendResetOtp = async (req, res) => {
     const subject = "🗝️ Password reset OTP.";
     const message = `OTP for resetting your password ${otp} Use this OTP to process with resetting your password.`;
 
-    sendEmail(email, subject, message);
+    await sendEmail(email, subject, message);
     sendEmailByResend(email, subject, message);
 
     return res.status(200).json({
