@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../utils/generateTokenAndSetCookie.js";
 import sendEmail from "../config/nodemailer.js";
 import generateOtp from "../utils/generateOtp.js";
-import sendEmailByResend from "../config/resend.js";
 
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -206,7 +205,6 @@ export const sendResetOtp = async (req, res) => {
     const message = `OTP for resetting your password ${otp} Use this OTP to process with resetting your password.`;
 
     await sendEmail(email, subject, message);
-    sendEmailByResend(email, subject, message);
 
     return res.status(200).json({
       success: true,
