@@ -18,7 +18,10 @@ connectDB();
 
 const PORT = process.env.PORT || 3000;
 
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = [
+  "https://deerbooks-server.onrender.com",
+  "http://localhost:5173",
+];
 
 //middleware
 app.use(express.json());
