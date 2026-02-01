@@ -8,7 +8,11 @@ export const transporter = nodemailer.createTransport({
     user: "adithyarhane@gmail.com",
     pass: "jhcx ogrq tsfn sipc",
   },
+  tls: {
+    rejectUnauthorized: false,
+  },
 });
+
 export const sendEmail = async (email, subject, message) => {
   // Send an email using async/await
   (async () => {
