@@ -1,30 +1,38 @@
 import nodemailer from "nodemailer";
 
-const transporter = nodemailer.createTransport({
-  host: process.env.GMAIL_HOST,
-  port: 465,
-  secure: process.env.NODE_ENV === "production" ? true : false,
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS,
-  },
-});
-
-const sendEmail = (email, subject, message) => {
-  const mailOptions = {
-    from: process.env.GMAIL_USER,
-    to: email,
-    subject: subject,
-    text: message,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log("Error", error);
-    } else {
-      console.log("Email sent: ", info.response);
-    }
-  });
+const sendEmail = async (email, subject, message) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.GMAIL_HOST,
+      port: 465,
+      secure: process.env.NODE_ENV === "production" ? true : false,
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+    const mailData = {
+      from: `"DeerBooks" <${process.env.GMAIL_USER}>`,
+      to: email,
+      subject,
+      text: message,
+    };
+    await new Promise((resolve, reject) => {
+      transporter.sendMail(mailData, (err, info) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          resolve(info);
+        }
+      });
+    });
+  } catch (error) {
+    console.error("Email error:", error.message);
+  }
 };
 
 export default sendEmail;
