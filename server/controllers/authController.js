@@ -1,7 +1,7 @@
 import userModel from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../utils/generateTokenAndSetCookie.js";
-import sendEmail from "../config/nodemailer.js";
+import { sendEmail, transporter } from "../config/nodemailer.js";
 import generateOtp from "../utils/generateOtp.js";
 
 export const signup = async (req, res) => {
@@ -204,7 +204,17 @@ export const sendResetOtp = async (req, res) => {
     const subject = "🗝️ Password reset OTP.";
     const message = `OTP for resetting your password ${otp} Use this OTP to process with resetting your password.`;
 
-    await sendEmail(email, subject, message);
+    // Send an email using async/await
+    (async () => {
+      const info = await transporter.sendMail({
+        from: '"DeerBooks" <adithyarhane@gmail.com>',
+        to: email,
+        subject: subject,
+        text: message, // Plain-text version of the message
+      });
+
+      console.log("Message sent:", info.messageId);
+    })();
 
     return res.status(200).json({
       success: true,

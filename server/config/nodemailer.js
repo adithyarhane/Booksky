@@ -1,16 +1,15 @@
 import nodemailer from "nodemailer";
 
-const sendEmail = async (email, subject, message) => {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true, // Use true for port 465, false for port 587
-    auth: {
-      user: "adithyarhane@gmail.com",
-      pass: "jhcx ogrq tsfn sipc",
-    },
-  });
-
+export const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // Use true for port 465, false for port 587
+  auth: {
+    user: "adithyarhane@gmail.com",
+    pass: "jhcx ogrq tsfn sipc",
+  },
+});
+export const sendEmail = async (email, subject, message) => {
   // Send an email using async/await
   (async () => {
     const info = await transporter.sendMail({
@@ -23,5 +22,3 @@ const sendEmail = async (email, subject, message) => {
     console.log("Message sent:", info.messageId);
   })();
 };
-
-export default sendEmail;
