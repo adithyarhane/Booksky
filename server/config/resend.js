@@ -5,7 +5,7 @@ const sendEmailByResend = async (email, subject, message) => {
 
   resend.emails.send({
     from: "onboarding@resend.dev",
-    to: "adithyarhane@gmail.com",
+    to: email,
     subject: subject,
     text: message,
   });
