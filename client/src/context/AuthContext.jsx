@@ -210,7 +210,6 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const getAuthState = async () => {
       axios.defaults.withCredentials = true;
-      if (!isLoggedIn) return;
       try {
         setAuthLoading(true);
         const res = await axios.get(`${SERVER_URL}/api/v1/auth/is-auth`);
@@ -228,7 +227,7 @@ export const AuthContextProvider = ({ children }) => {
       }
     };
     getAuthState();
-  }, [isLoggedIn]);
+  }, []);
 
   const value = {
     isLoggedIn,
