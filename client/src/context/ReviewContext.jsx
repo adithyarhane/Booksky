@@ -2,18 +2,19 @@
 import axios from "axios";
 import { createContext, useContext, useState } from "react";
 import { toast } from "react-toastify";
+import { useAuthContext } from "./AuthContext";
 
 const ReviewContext = createContext();
 const SERVER_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const ReviewContextProvider = ({ children }) => {
+  const { isLoggedIn } = useAuthContext();
   const [reviews, setReviews] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   const addReview = async (e, bookId, review) => {
     e.preventDefault();
     const { rating, comment } = review;
-
     try {
       setIsLoading(true);
 
@@ -36,6 +37,7 @@ export const ReviewContextProvider = ({ children }) => {
   };
 
   const getReviews = async (bookId) => {
+    if (!isLoggedIn) return;
     try {
       setIsLoading(true);
       const res = await axios.post(

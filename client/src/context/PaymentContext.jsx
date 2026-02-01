@@ -2,17 +2,21 @@ import { createContext, useContext, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "./AuthContext";
 
 const PaymentContext = createContext();
 const SERVER_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const PaymentContextProvider = ({ children }) => {
+  const { isLoggedIn } = useAuthContext();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const placeRazorpayOrder = async (e, shippingAddress, isAccountVerified) => {
     e.preventDefault();
     axios.defaults.withCredentials = true;
+
+    if (!isLoggedIn) return;
 
     const { name, city, phone, postal_code, street_address } = shippingAddress;
     if (!name || !city || !phone || !postal_code || !street_address)

@@ -93,7 +93,7 @@ const BookDetailsInfoSec = () => {
       {/* Actions */}
       <div className="flex flex-col sm:flex-row gap-4 pt-6">
         <button
-          onClick={(e) => addToCart(e, book._id, isLoggedIn)}
+          onClick={(e) => addToCart(e, book._id)}
           className="grow flex items-center justify-center gap-3 px-10 py-5 rounded-full bg-[#1C1B1F] text-white text-xs font-black uppercase tracking-[0.2em] hover:bg-emerald-950 transition-all duration-500 shadow-xl shadow-stone-200 group"
         >
           <FiShoppingBag className="group-hover:rotate-12 transition-transform" />
@@ -102,7 +102,7 @@ const BookDetailsInfoSec = () => {
 
         <button
           onClick={(e) => {
-            toggleWishlist(e, book._id, isLiked, setIsLiked, isLoggedIn);
+            toggleWishlist(e, book._id, isLiked, setIsLiked);
           }}
           className={`flex items-center justify-center gap-3 px-10 py-5 rounded-full border border-stone-200 text-xs font-black uppercase tracking-[0.2em] transition-all duration-300 ${
             isLiked

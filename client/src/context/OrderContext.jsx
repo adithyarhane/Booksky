@@ -2,11 +2,13 @@
 import axios from "axios";
 import { createContext, useContext, useState } from "react";
 import generateTrackingSteps from "../utils/generateTrackingSteps";
+import { useAuthContext } from "./AuthContext";
 
 const OrderContext = createContext();
 const SERVER_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const OrderContextProvider = ({ children }) => {
+  const { isLoggedIn } = useAuthContext();
   const [isLoading, setIsLoading] = useState(false);
   const [ordersData, setOrdersData] = useState();
   const [orderData, setOrderData] = useState();
@@ -21,6 +23,7 @@ export const OrderContextProvider = ({ children }) => {
 
   const getOrdersData = async () => {
     axios.defaults.withCredentials = true;
+    if (!isLoggedIn) return;
     try {
       setIsLoading(true);
       const res = await axios.get(`${SERVER_URL}/api/v1/order/data`);
@@ -38,6 +41,7 @@ export const OrderContextProvider = ({ children }) => {
 
   const getOrderData = async (orderId) => {
     axios.defaults.withCredentials = true;
+    if (!isLoggedIn) return;
     try {
       setIsLoading(true);
       const res = await axios.get(`${SERVER_URL}/api/v1/order/${orderId}`);

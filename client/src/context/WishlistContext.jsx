@@ -2,11 +2,13 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "./AuthContext";
 
 const WishlistContext = createContext();
 const SERVER_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const WishlistContextProvider = ({ children }) => {
+  const { isLoggedIn } = useAuthContext();
   const [wishlistBooks, setWishlistBooks] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -52,6 +54,7 @@ export const WishlistContextProvider = ({ children }) => {
 
   const getWishlistData = async () => {
     axios.defaults.withCredentials = true;
+    if (!isLoggedIn) return;
     try {
       setIsLoading(true);
       const res = await axios.get(`${SERVER_URL}/api/v1/wishlist/data`);
@@ -67,7 +70,7 @@ export const WishlistContextProvider = ({ children }) => {
     }
   };
 
-  const toggleWishlist = (e, bookId, isLiked, setIsLiked, isLoggedIn) => {
+  const toggleWishlist = (e, bookId, isLiked, setIsLiked) => {
     e.preventDefault();
     if (!isLoggedIn) {
       navigate("/login");

@@ -3,16 +3,18 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useAuthContext } from "./AuthContext";
 
 const CartContext = createContext();
 const SERVER_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const CartContextProvider = ({ children }) => {
+  const { isLoggedIn } = useAuthContext();
   const navigate = useNavigate();
   const [cartData, setCartData] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
-  const addToCart = async (e, bookId, isLoggedIn) => {
+  const addToCart = async (e, bookId) => {
     e.preventDefault();
     axios.defaults.withCredentials = true;
     if (!isLoggedIn) {
@@ -37,6 +39,7 @@ export const CartContextProvider = ({ children }) => {
 
   const getCart = async () => {
     axios.defaults.withCredentials = true;
+    if (!isLoggedIn) return;
     try {
       setIsLoading(true);
       const res = await axios.get(`${SERVER_URL}/api/v1/cart/data`);
