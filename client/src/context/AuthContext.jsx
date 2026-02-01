@@ -191,7 +191,6 @@ export const AuthContextProvider = ({ children }) => {
 
   const getUserData = async () => {
     axios.defaults.withCredentials = true;
-    if (!isLoggedIn) return;
     try {
       setIsLoading(true);
       const res = await axios.get(`${SERVER_URL}/api/v1/user/data`);
