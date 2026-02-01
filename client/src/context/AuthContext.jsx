@@ -56,7 +56,7 @@ export const AuthContextProvider = ({ children }) => {
 
       if (res.data.success) {
         setIsLoggedIn(true);
-        getUserData();
+        getUserData(res.data.user);
         getCart();
         navigate("/");
       } else {
@@ -191,7 +191,6 @@ export const AuthContextProvider = ({ children }) => {
 
   const getUserData = async () => {
     axios.defaults.withCredentials = true;
-    if (!isLoggedIn) return;
     try {
       setIsLoading(true);
       const res = await axios.get(`${SERVER_URL}/api/v1/user/data`);
@@ -218,22 +217,14 @@ export const AuthContextProvider = ({ children }) => {
           setIsLoggedIn(true);
           getUserData();
         } else {
-          setIsLoggedIn(false);
+          alert(res.data.message);
         }
       } catch (error) {
-        // Silently handle 401 (normal case)
-        if (error.response?.status === 401) {
-          setIsLoggedIn(false);
-          return;
-        }
-
-        // Only log real errors
-        console.error("Auth check failed:", error);
+        console.log(error.message);
       } finally {
         setAuthLoading(false);
       }
     };
-
     getAuthState();
   }, []);
 
