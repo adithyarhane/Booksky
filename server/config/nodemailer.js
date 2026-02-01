@@ -2,37 +2,37 @@ import nodemailer from "nodemailer";
 
 const sendEmail = async (email, subject, message) => {
   try {
-    // 1. Create Transporter
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      service: "gmail", // Let Nodemailer handle the host/port/secure logic
       auth: {
         user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS, // Use 16-character App Password
+        pass: process.env.GMAIL_PASS, // MUST be a 16-character App Password
       },
     });
 
-    // 2. Verify connection configuration
-    // This is crucial for production debugging
+    // 1. CRITICAL: Test the connection before sending
     await transporter.verify();
+    console.log("Connection to Gmail established");
 
-    // 3. Define Mail Options
-    const mailOptions = {
+    const mailData = {
       from: `"DeerBooks" <${process.env.GMAIL_USER}>`,
       to: email,
       subject: subject,
       text: message,
-      // html: `<b>${message}</b>`, // Optional: Use HTML for better looking emails
     };
 
-    // 4. Send Mail
-    const info = await transporter.sendMail(mailOptions);
-
-    console.log("Email sent successfully: %s", info.messageId);
-    return { success: true, info };
+    // 2. Use the promise-based sendMail directly
+    const info = await transporter.sendMail(mailData);
+    console.log("Email sent successfully! ID:", info.messageId);
+    return true;
   } catch (error) {
-    // Detailed error logging for production troubleshooting
-    console.error("Nodemailer Error:", error.message);
-    return { success: false, error: error.message };
+    // 3. Log the FULL error object so you can see it in your production logs
+    console.error("PRODUCTION EMAIL ERROR:", {
+      message: error.message,
+      code: error.code,
+      command: error.command,
+    });
+    return false;
   }
 };
 
