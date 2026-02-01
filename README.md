@@ -78,25 +78,28 @@ Server (Node + Express)
 
 ---
 
-##  Project Structure
-booksky/
+## 📁 Project Structure
+DeerBooks/
+---
 ├── client/        # React frontend
-│   ├── pages
-│   ├── components
-│   ├── context
-│   └── utils
+│   ├── pages/
+│   ├── components/
+│   ├── context/
+│   └── utils/
 |
 ├── server/        # Node backend
-│   ├── controllers
-│   ├── models
-│   ├── routes
-│   ├── middleware
-│   └── utils
-
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   └── utils/
+---
 
 ---
 
-##  Environment Variables
+## ⚙️ Environment Variables
+Create a `.env` file in the **server** directory:
+---
 PORT=9000
 MONGO_URI = your_mongodb_url
 JWT_SECRET = your_secret
@@ -106,6 +109,7 @@ GMAIL_USER = your_email
 GMAIL_PASS = your_email_pass
 RAZORPAY_API_KEY = your_key
 RAZORPAY_SECRET_KEY = your_secret
+---
 
 ---
 
