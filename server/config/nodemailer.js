@@ -11,7 +11,7 @@ const sendEmail = async (email, subject, message) => {
         pass: process.env.GMAIL_PASS,
       },
       tls: {
-        rejectUnauthorized: false,
+        ciphers: "SSLv3",
       },
     });
     const mailData = {
