@@ -3,10 +3,16 @@ import nodemailer from "nodemailer";
 const sendEmail = async (email, subject, message) => {
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail", // Let Nodemailer handle the host/port/secure logic
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // Must be false for 587
       auth: {
         user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS, // MUST be a 16-character App Password
+        pass: process.env.GMAIL_PASS,
+      },
+      // Add this to handle production certificate issues
+      tls: {
+        rejectUnauthorized: false,
       },
     });
 
