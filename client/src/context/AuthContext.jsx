@@ -228,7 +228,7 @@ export const AuthContextProvider = ({ children }) => {
       }
     };
     getAuthState();
-  }, []);
+  }, [isLoggedIn]);
 
   const value = {
     isLoggedIn,
