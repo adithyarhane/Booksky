@@ -82,8 +82,7 @@ export const addBook = async (req, res) => {
     console.log(error);
     return res.status(500).json({
       success: false,
-      message: error.message,
-      //   message: "Interal server error",
+      message: "Interal server error",
     });
   }
 };
@@ -107,7 +106,7 @@ export const getBooks = async (req, res) => {
     };
 
     // Category filter (array-based)
-    if (category) {
+    if (category && category.toLowerCase() !== "all") {
       filter.categories = category.toLowerCase();
     }
 
@@ -127,7 +126,17 @@ export const getBooks = async (req, res) => {
     if (search) {
       filter.$or = [
         { title: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+        { publisher: { $regex: search, $options: "i" } },
+        { edition: { $regex: search, $options: "i" } },
+        { language: { $regex: search, $options: "i" } },
+        { publishedYear: { $regex: search, $options: "i" } },
         { "authors.name": { $regex: search, $options: "i" } },
+        { "sero.metaTitle": { $regex: search, $options: "i" } },
+        { "sea.metaDescription": { $regex: search, $options: "i" } },
+        { "sea.keywords": { $regex: search, $options: "i" } },
+        { tags: { $regex: search, $options: "i" } },
+        { categories: { $regex: search, $options: "i" } },
       ];
     }
 
@@ -160,8 +169,7 @@ export const getBooks = async (req, res) => {
     console.log(error);
     return res.json({
       success: false,
-      message: error.message,
-      //   message: "Failed to fetch books",
+      message: "Failed to fetch books",
     });
   }
 };
@@ -226,14 +234,14 @@ export const updateBook = async (req, res) => {
 
     if (updates.categories) {
       updates.categories = updates.categories.map((c) =>
-        c.toLowerCase().trim()
+        c.toLowerCase().trim(),
       );
     }
 
     const updatedBook = await bookModel.findByIdAndUpdate(
       id,
       { $set: updates },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     return res.status(200).json({
@@ -357,6 +365,96 @@ export const getRelatedBooks = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Failed to fetch related books",
+    });
+  }
+};
+
+export const getBestsellers = async (req, res) => {
+  try {
+    const limit = Number(req.body.limit) || 10;
+
+    const books = await bookModel
+      .find({
+        isActive: true,
+        isBestseller: true,
+        "inventory.stock": { $gt: 0 },
+      })
+      .sort({
+        "ratings.count": -1,
+        "ratings.average": -1,
+        createdAt: -1,
+      })
+      .limit(limit)
+      .select(
+        "title slug authors pricing images.cover ratings categories publishedYear",
+      );
+
+    return res.status(200).json({
+      success: true,
+      count: books.length,
+      data: books,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch best sellers",
+    });
+  }
+};
+
+export const getNewReleases = async (req, res) => {
+  try {
+    const limit = Number(req.body.limit) || 10;
+
+    const books = await bookModel
+      .find({ isActive: true })
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .select(
+        "title slug authors pricing images description ratings publishedYear categories isFeatured",
+      );
+
+    return res.status(200).json({
+      success: true,
+      count: books.length,
+      data: books,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch new releases",
+    });
+  }
+};
+
+export const getBooksForEveryone = async (req, res) => {
+  try {
+    const limit = Number(req.query.limit) || 10;
+
+    const books = await bookModel
+      .find({
+        isActive: true,
+        tags: { $in: ["everyone"] },
+        "inventory.isAvailable": true,
+      })
+      .sort({
+        "ratings.average": -1,
+        "ratings.count": -1,
+      })
+      .limit(limit)
+      .select(
+        "title slug authors pricing images ratings categories publishedYear",
+      );
+
+    return res.status(200).json({
+      success: true,
+      count: books.length,
+      data: books,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch books for everyone",
     });
   }
 };

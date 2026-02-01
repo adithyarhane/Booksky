@@ -1,12 +1,12 @@
 import bookModel from "../models/bookModel.js";
 import cartModel from "../models/cartModel.js";
 import orderModel from "../models/orderModel.js";
+import generateOrderId from "../utils/generateOrderId.js";
 
 export const createOrderFromCart = async (req, res) => {
   try {
     const userId = req.user.id;
     const { paymentMethod, shippingAddress } = req.body;
-    console.log(userId);
 
     // fetch cart
     const cart = await cartModel.findOne({ user: userId });
@@ -57,6 +57,7 @@ export const createOrderFromCart = async (req, res) => {
 
     // create order
     const order = await orderModel.create({
+      orderId: generateOrderId(),
       user: userId,
       items: orderItems,
       pricing: {
@@ -96,12 +97,12 @@ export const createOrderFromCart = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: "Order placed successfully",
-      date: order,
+      data: order,
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Something went wrong.",
     });
   }
 };
@@ -111,9 +112,15 @@ export const getOrders = async (req, res) => {
     const userId = req.user.id;
 
     const orders = await orderModel
-      .findOne({ user: userId, isActive: true })
+      .find({ user: userId, isActive: true, status: { $ne: "pending" } })
       .sort({ createdAt: -1 })
-      .select("items pricing status placedAt expectedDeliveryDate deliveredAt");
+      .populate({
+        path: "items.book",
+        select: "title images.cover slug",
+      })
+      .select(
+        "items pricing status placedAt expectedDeliveryDate deliveredAt orderId",
+      );
 
     return res.status(200).json({
       success: true,
@@ -123,7 +130,7 @@ export const getOrders = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      messager: error.message,
+      message: "Something went wrong.",
     });
   }
 };
@@ -163,7 +170,7 @@ export const getOrderById = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Something went wrong.",
     });
   }
 };

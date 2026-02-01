@@ -56,7 +56,7 @@ export const addToCart = async (req, res) => {
 
     // 5. Check if book already exists
     const itemIndex = cart.items.findIndex(
-      (item) => item.book.toString() === bookId
+      (item) => item.book.toString() === bookId,
     );
 
     if (itemIndex > -1) {
@@ -141,7 +141,7 @@ export const updateCartItemQuantity = async (req, res) => {
     // 3. Find item in cart
 
     const itemIndex = cart.items.findIndex(
-      (item) => item.book.toString() === bookId
+      (item) => item.book.toString() === bookId,
     );
 
     if (itemIndex === -1) {
@@ -226,7 +226,7 @@ export const removeFromCart = async (req, res) => {
 
     // 2. FInd item index
     const itemIndex = cart.items.findIndex(
-      (item) => item.book.toString() === bookId
+      (item) => item.book.toString() === bookId,
     );
 
     if (itemIndex === -1) {
@@ -320,12 +320,12 @@ export const getCart = async (req, res) => {
       path: "items.book",
       match: { isActive: true },
       select:
-        "title slug pricing images ratings categories publishedYear language",
+        "title slug authors pricing images ratings categories publishedYear language",
     });
 
     // If cart does not exists
     if (!cart) {
-      return res.status(404).json({
+      return res.status(200).json({
         success: true,
         data: {
           items: [],
@@ -363,7 +363,7 @@ export const getCart = async (req, res) => {
     await cart.save();
 
     return res.status(200).json({
-      success: false,
+      success: true,
       data: cart,
     });
   } catch (error) {

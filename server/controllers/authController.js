@@ -36,8 +36,8 @@ export const signup = async (req, res) => {
     generateTokenAndSetCookie(res, user._id);
 
     // Send welcome email
-    const subject = "Welcome to Booksky ✨";
-    const message = `✨ Welcome to Booksky Website. Your account has been created with id: ${email}`;
+    const subject = "Welcome to DeerBooks ✨";
+    const message = `✨ Welcome to DeerBooks Website. Your account has been created with id: ${email}`;
 
     sendEmail(email, subject, message);
 
@@ -48,7 +48,7 @@ export const signup = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Something went wrong.",
     });
   }
 };
@@ -91,7 +91,7 @@ export const login = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Something went wrong.",
     });
   }
 };
@@ -128,7 +128,7 @@ export const sendVerificationOtp = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Something went wrong.",
     });
   }
 };
@@ -172,7 +172,7 @@ export const verifyAccount = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Something went wrong.",
     });
   }
 };
@@ -213,7 +213,7 @@ export const sendResetOtp = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Something went wrong.",
     });
   }
 };
@@ -285,7 +285,7 @@ export const isAuthenticated = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Something went wrong.",
     });
   }
 };
@@ -305,7 +305,7 @@ export const logout = async (req, res) => {
   } catch (error) {
     return req.status(500).json({
       success: false,
-      message: error.message,
+      message: "Something went wrong.",
     });
   }
 };

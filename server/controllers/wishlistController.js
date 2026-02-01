@@ -46,7 +46,7 @@ export const addToWishlist = async (req, res) => {
     }
 
     const alreadyAdded = wishlist.items.some(
-      (item) => item.book.toString() === bookId
+      (item) => item.book.toString() === bookId,
     );
 
     if (alreadyAdded) {
@@ -67,8 +67,7 @@ export const addToWishlist = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
-      //   message: "Failed to add book to wishlist",
+      message: "Failed to add book to wishlist",
     });
   }
 };
@@ -90,7 +89,7 @@ export const removeFromWishlist = async (req, res) => {
     }
 
     const itemIndex = wishlist.items.findIndex(
-      (item) => item.book.toString() === bookId
+      (item) => item.book.toString() === bookId,
     );
 
     if (itemIndex === -1) {
@@ -128,7 +127,7 @@ export const getWishlistData = async (req, res) => {
         path: "items.book",
         match: { isActive: true },
         select:
-          "title slug pricing images ratings categories publishedYear language",
+          "title slug pricing images ratings authors categories publishedYear language tags ",
       });
 
     if (!wishlist) {

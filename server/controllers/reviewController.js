@@ -55,7 +55,7 @@ export const addReview = async (req, res) => {
     if (!hasPurchased) {
       return res.status(403).json({
         success: false,
-        message: "You can review only after purchasing this book",
+        message: "You can review only after Delivery",
       });
     } else if (hasPurchased) {
       isVerifiedPurchase = true;

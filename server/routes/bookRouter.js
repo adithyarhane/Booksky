@@ -1,8 +1,11 @@
 import express from "express";
 import {
   addBook,
+  getBestsellers,
   getBook,
   getBooks,
+  getBooksForEveryone,
+  getNewReleases,
   getRelatedBooks,
   softDelete,
   updateBook,
@@ -11,7 +14,10 @@ import userAuth from "../middleware/userAuth.js";
 
 const bookRouter = express.Router();
 
-bookRouter.route("/").get(getBooks);
+bookRouter.route("/").post(getBooks);
+bookRouter.route("/bestsellers").post(getBestsellers);
+bookRouter.route("/new-releases").post(getNewReleases);
+bookRouter.route("/books-for-everyone").post(getBooksForEveryone);
 bookRouter.route("/:slug").get(getBook);
 bookRouter.route("/add").post(userAuth, addBook);
 bookRouter.route("/update/:id").patch(userAuth, updateBook);

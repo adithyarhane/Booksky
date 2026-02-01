@@ -9,7 +9,7 @@ import {
 const reviewRouter = express.Router();
 
 reviewRouter.route("/add-review/:bookId").post(userAuth, addReview);
-reviewRouter.route("/get-reviews/:bookId").get(getReviewsByBook);
+reviewRouter.route("/get-reviews/:bookId").post(getReviewsByBook);
 reviewRouter
   .route("/delete-review/:reviewId")
   .delete(userAuth, deleteOwnReview);

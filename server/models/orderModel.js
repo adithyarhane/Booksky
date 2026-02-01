@@ -22,11 +22,17 @@ const orderItemSchema = new mongoose.Schema(
     },
     discountPrice: Number,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const OrderSchema = new mongoose.Schema(
   {
+    orderId: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
@@ -53,6 +59,7 @@ const OrderSchema = new mongoose.Schema(
         "paid",
         "processing",
         "shipped",
+        "out for delivery",
         "delivered",
         "cancelled",
         "refunded",
@@ -63,7 +70,7 @@ const OrderSchema = new mongoose.Schema(
     payment: {
       method: {
         type: String,
-        enum: ["cod", "card", "upi", "netbacking"],
+        enum: ["cod", "card", "upi", "netbacking", "razorpay"],
       },
       transactionId: String,
       status: {
@@ -98,7 +105,7 @@ const OrderSchema = new mongoose.Schema(
       default: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const orderModel = mongoose.model("order", OrderSchema);

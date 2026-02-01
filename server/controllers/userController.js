@@ -5,7 +5,7 @@ export const getUserData = async (req, res) => {
   try {
     const user = await userModel
       .findById(userId)
-      .select("name isAccoutVerified");
+      .select("name email isAccountVerified _id");
 
     if (!user) {
       return res.json({
@@ -21,7 +21,7 @@ export const getUserData = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Something went wrong.",
     });
   }
 };
