@@ -99,7 +99,7 @@ export const CartContextProvider = ({ children }) => {
 
   useEffect(() => {
     getCart();
-  }, []);
+  }, [isLoggedIn]);
 
   const value = {
     addToCart,

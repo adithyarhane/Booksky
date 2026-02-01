@@ -88,7 +88,7 @@ export const WishlistContextProvider = ({ children }) => {
 
   useEffect(() => {
     getWishlistData();
-  }, []);
+  }, [isLoggedIn]);
 
   const value = {
     getWishlistData,
