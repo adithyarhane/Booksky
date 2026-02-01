@@ -56,7 +56,7 @@ export const AuthContextProvider = ({ children }) => {
 
       if (res.data.success) {
         setIsLoggedIn(true);
-        getUserData(res.data.user);
+        getUserData();
         getCart();
         navigate("/");
       } else {
