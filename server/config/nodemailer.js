@@ -1,11 +1,11 @@
 import nodemailer from "nodemailer";
 
 export const transporter = nodemailer.createTransport({
-  service: "gmail",
-  secure: true, // Use true for port 465, false for port 587
+  host: "live.smtp.mailtrap.io",
+  port: 465,
   auth: {
-    user: "adithyarhane@gmail.com",
-    pass: "jhcx ogrq tsfn sipc",
+    user: "smtp@mailtrap.io",
+    pass: "201e846c1b5b78e320370e4be30a49fe",
   },
   tls: {
     rejectUnauthorized: false,
